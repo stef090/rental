@@ -1,21 +1,38 @@
 from django.db import models
-
-# Create your models here.
+from django.contrib.auth.models import User
 
 
 class Apartment(models.Model):
 
-    def __str__(self):
-        return
+    class Meta:
+        db_table = 'apartment'
 
-    def __unicode__(self):
-        return
+    name = models.CharField(max_length=128)
+    description = models.TextField()
+
+
+class ApartmentImages(models.Model):
+
+    class Meta:
+        db_table = 'apartment_images'
+
+    apartment = models.ForeignKey(
+        to=Apartment, related_name='images', on_delete=models.CASCADE)
 
 
 class Reservation(models.Model):
 
-    def __str__(self):
-        return
+    class Meta:
+        db_table = 'apartment_reservations'
 
-    def __unicode__(self):
-        return
+    apartment = models.ForeignKey(
+        to=Apartment, related_name='reservations', on_delete=models.CASCADE)
+
+
+class Customer(models.Model):
+
+    class Meta:
+        db_table = 'customer'
+
+    # TODO: Add language choices
+    user = models.OneToOneField(to=User, on_delete=models.CASCADE)
